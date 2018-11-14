@@ -21,7 +21,11 @@ public class TransactionsActivity {
         getTransactions.enqueue(new Callback<FantasyContent>() {
             @Override
             public void onResponse(Call<FantasyContent> call, Response<FantasyContent> response) {
-                Log.d("TAG response", response.body().getLeague().getTransactions().getTransactionList().get(0).getTimestamp());
+                Log.d("TAG response", response.body().getLeague().getTransactions().getTransactionList().get(0).getType());
+                Log.d("TAG response", response.body().getLeague().getTransactions().getTransactionList().get(0).getPlayer().get(0).getName().getName());
+                Log.d("TAG response", response.body().getLeague().getTransactions().getTransactionList().get(0).getPlayer().get(0).getTransactionData().getType());
+
+
                 Log.d("TAG response", response.body().getLeague().toString());
             //    Log.d("TAG response", response.errorBody().toString());
 

@@ -11,4 +11,19 @@ public class Player {
     @Element(name="transaction_data")
     private TransactionData transactionData;
 
+    public Name getName() {
+        return name;
+    }
+
+    public void setName(Name name) {
+        this.name = name;
+    }
+
+    public TransactionData getTransactionData() {
+        return transactionData;
+    }
+
+    public void setTransactionData(TransactionData transactionData) {
+        this.transactionData = transactionData;
+    }
 }
