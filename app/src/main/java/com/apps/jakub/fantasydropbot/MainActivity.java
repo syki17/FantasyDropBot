@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.apps.jakub.fantasydropbot.Calls.TokenCallBody;
+import com.apps.jakub.fantasydropbot.Models.FantasyContent;
 import com.apps.jakub.fantasydropbot.Models.Token;
 import com.apps.jakub.fantasydropbot.Retrofit.Retrofit;
 import okhttp3.OkHttpClient;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     String result;
     String tokenBody;
     String encode;
-    Map<String,String> bodyValues;
+    Map<String, String> bodyValues;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -49,12 +50,9 @@ public class MainActivity extends AppCompatActivity {
         buttonAuthLogin = findViewById(R.id.buttonAuthLogin);
         pasteCode = findViewById(R.id.yahooCode);
 
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-
-
         //encode
         //  byte[] encoded = Base64.getEncoder().encode("dj0yJmk9TkRVdHZxNnpabXpRJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTE3:d311b4b7da9400de442b41831d36353d8257197f".getBytes());
-        encode ="Basic "+ Base64.encodeToString("dj0yJmk9N29lRDhFbFFwVFVsJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTI5:abb9b9a58172ed44992a8c6312993517620ecaf9".getBytes(), Base64.NO_WRAP);
+        encode = "Basic " + Base64.encodeToString("dj0yJmk9N29lRDhFbFFwVFVsJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTI5:abb9b9a58172ed44992a8c6312993517620ecaf9".getBytes(), Base64.NO_WRAP);
 
         buttonAuthLogin.setOnClickListener(v -> {
             //open broswer with the post string
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         startRequest.setOnClickListener(v -> {
             testText = findViewById(R.id.testText);
             authCode = pasteCode.getText().toString();
-           // testText.setText(authCode + "body here: "+tokenBody);
+            // testText.setText(authCode + "body here: "+tokenBody);
             /*
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://api.login.yahoo.com")
@@ -89,23 +87,23 @@ public class MainActivity extends AppCompatActivity {
        */
 
             bodyValues = new HashMap<>();
-            bodyValues.put("redirect_uri","oob");
-            bodyValues.put("code",authCode);
-            bodyValues.put("grant_type","authorization_code");
+            bodyValues.put("redirect_uri", "oob");
+            bodyValues.put("code", authCode);
+            bodyValues.put("grant_type", "authorization_code");
             Retrofit retrofit = new Retrofit();
-            tokenBody = "redirect_uri=oob&code="+authCode+"&grant_type=authorization_code";
+            tokenBody = "redirect_uri=oob&code=" + authCode + "&grant_type=authorization_code";
             Adapter service = retrofit.Retrofit("https://api.login.yahoo.com").create(Adapter.class);
-            testText.setText(authCode + "body here: "+tokenBody);
-            TokenCallBody body = new TokenCallBody("oob",authCode,"authorization_code");
-            Call<Token> call = service.loadToken(encode,bodyValues);
+            testText.setText(authCode + "body here: " + tokenBody);
+            TokenCallBody body = new TokenCallBody("oob", authCode, "authorization_code");
+            Call<Token> call = service.loadToken(encode, bodyValues);
             try {
                 Log.d("TAG", service.loadToken(encode, bodyValues).request().body().toString());
-            }catch(NullPointerException e){
+            } catch (NullPointerException e) {
                 Log.d("TAG", "RIP NO BODY");
 
             }
-        //    Log.d("TAG", service.loadToken("application/x-www-form-urlencoded",encode,body).request().toString());
-        //    Log.d("TAG", service.loadToken("application/x-www-form-urlencoded",encode,body).request().header("Authorization"));
+            //    Log.d("TAG", service.loadToken("application/x-www-form-urlencoded",encode,body).request().toString());
+            //    Log.d("TAG", service.loadToken("application/x-www-form-urlencoded",encode,body).request().header("Authorization"));
 
             //Log.d("TAG", service.("application/x-www-form-urlencoded",encode,tokenBody).request().body().contentType().toString());
 
@@ -116,17 +114,18 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Token> call, Response<Token> response) {
                     try {
-                    //    Log.d("TAG response", response.errorBody().string());
+                        //    Log.d("TAG response", response.errorBody().string());
                         Log.d("TAG response", response.body().getAccessToken());
+                        TransactionsActivity getTransactions = new TransactionsActivity(response.body().getAccessToken());
+
+                        // Get the Token and send request to get the Transactions!
+
+
 
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
-                    Log.d("TAG code", String.valueOf(response.code()));
-                    Log.d("TAG raw", response.raw().toString());
 
-
-                    result = response.message();
                 }
 
                 @Override

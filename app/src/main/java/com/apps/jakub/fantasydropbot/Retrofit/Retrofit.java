@@ -27,6 +27,7 @@ public class Retrofit {
                 .baseUrl(baseUrl)
                 //.client(client)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
     }
     // Adapter adapter = rBuilder.create(Adapter.class);

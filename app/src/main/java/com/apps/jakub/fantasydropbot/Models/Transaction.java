@@ -8,7 +8,7 @@ import java.util.List;
 
 @Root(name = "transaction", strict = false)
 public class Transaction {
-    @ElementList(name="players",inline=true)
+    @ElementList(name="players")
     private List<Player> player;
     @Element(name = "type")
     private String type;

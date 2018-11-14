@@ -14,7 +14,7 @@ public interface Adapter {
     // We are calling this site https://fantasysports.yahooapis.com
     //after testing we replace the keys with @Path so it can load for different leagues
     @GET("/fantasy/v2/league/386.l.7366/transactions;type=drop;count=5")
-    Call<FantasyContent> loadRSSFeed();
+    Call<FantasyContent> getTransactions(@Header("Authorization")String Token);
 
     //get our Token
     @POST("/oauth2/get_token")
